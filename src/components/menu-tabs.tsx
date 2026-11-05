@@ -1,0 +1,6 @@
+'use client';
+import * as Tabs from '@radix-ui/react-tabs';
+import { AnimatePresence, motion } from 'framer-motion';
+import { menuCategories } from '@/data/menu';
+import { useState } from 'react';
+export function MenuTabs(){const [active,setActive]=useState('all');const visible=menuCategories.filter(c=>active==='all'||c.id===active);return <Tabs.Root value={active} onValueChange={setActive} className="menu-tabs"><Tabs.List aria-label="Menu categories" className="tabs-list"><Tabs.Trigger value="all">All</Tabs.Trigger>{menuCategories.map(c=><Tabs.Trigger key={c.id} value={c.id}>{c.title}</Tabs.Trigger>)}</Tabs.List><div className="menu-list"><AnimatePresence mode="wait"><motion.div key={active} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-8}} transition={{duration:.25}}>{visible.map(c=><article className="menu-category" key={c.id}><div className="category-title"><span>{c.number}</span><h2>{c.title.split(' ').slice(0,-1).join(' ')} <em>{c.title.split(' ').slice(-1)}</em></h2><p>{c.intro}</p></div><div className="menu-items">{c.items.map(item=><div className="menu-item" key={item.name}><div><h3>{item.name}</h3><p>{item.description}</p></div>{'label' in item&&<span className="menu-label">{item.label}</span>}</div>)}</div></article>)}</motion.div></AnimatePresence></div></Tabs.Root>}
